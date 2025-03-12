@@ -12,7 +12,7 @@ import java.util.List;
 public interface TransRequestChildRepository extends JpaRepository<TransRequestChild, Long> {
 
     @Query("SELECT c FROM TransRequestChild c " +
-           "JOIN SeniorityListFinal s ON s.uid = c.reqId " +
+           "JOIN SeniorityListFinal s ON s.uid = CAST(c.reqId AS string) " + // Cast reqId to String
            "LEFT JOIN Allocation a ON s.uid = a.empCode AND a.toOffice = :officeId " +
            "WHERE c.officeId = :officeId AND (a.id IS NULL OR a.toOffice != :officeId) " +
            "ORDER BY s.wg DESC")
