@@ -24,7 +24,8 @@ public class TransferService {
                 (String) row[1], // employee_name
                 (Integer) row[2], // preferred_office
                 (Integer) row[3], // preference_order
-                (Integer) row[4]  // priority_value
+                (Integer) row[4],  // priority_value
+                (String) row[5]
             ))
             .collect(Collectors.toList());
     }

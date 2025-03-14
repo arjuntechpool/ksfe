@@ -6,14 +6,16 @@ public class EmployeeQueueDTO {
     private Integer preferredOffice;
     private Integer preferenceOrder;
     private Integer priorityValue;
+    private String vacancyStatus; // New field
 
     // Constructor
-    public EmployeeQueueDTO(String employeeCode, String employeeName, Integer preferredOffice, Integer preferenceOrder, Integer priorityValue) {
+    public EmployeeQueueDTO(String employeeCode, String employeeName, Integer preferredOffice, Integer preferenceOrder, Integer priorityValue, String vacancyStatus) {
         this.employeeCode = employeeCode;
         this.employeeName = employeeName;
         this.preferredOffice = preferredOffice;
         this.preferenceOrder = preferenceOrder;
         this.priorityValue = priorityValue;
+        this.vacancyStatus = vacancyStatus;
     }
 
     // Getters and Setters
@@ -55,5 +57,13 @@ public class EmployeeQueueDTO {
 
     public void setPriorityValue(Integer priorityValue) {
         this.priorityValue = priorityValue;
+    }
+
+    public String getVacancyStatus() {
+        return vacancyStatus;
+    }
+
+    public void setVacancyStatus(String vacancyStatus) {
+        this.vacancyStatus = vacancyStatus;
     }
 }
