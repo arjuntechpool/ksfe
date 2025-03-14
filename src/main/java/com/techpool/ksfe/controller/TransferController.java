@@ -1,5 +1,6 @@
 package com.techpool.ksfe.controller;
 
+import com.techpool.ksfe.dto.EmployeeQueueDTO;
 import com.techpool.ksfe.entity.TransRequestChild;
 import com.techpool.ksfe.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class TransferController {
     private TransferService transferService;
 
     @GetMapping("/queue")
-    public ResponseEntity<List<TransRequestChild>> getQueueList(@RequestParam Integer officeId) {
-        List<TransRequestChild> queueList = transferService.generateQueueList(officeId);
+    public ResponseEntity<List<EmployeeQueueDTO>> getQueueList(@RequestParam Integer officeId) {
+        List<EmployeeQueueDTO> queueList = transferService.generateQueueList(officeId);
         return ResponseEntity.ok(queueList);
     }
 }
