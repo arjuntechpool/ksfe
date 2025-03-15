@@ -15,29 +15,32 @@ public interface TransRequestChildRepository extends JpaRepository<TransRequestC
         SELECT DISTINCT
             senior.uid AS employee_code,
             senior.firstName AS employee_name,
-            child.int_office_id AS preferred_office,
-            child.int_sl AS preference_order,
-            senior.wg AS priority_value,
-            CASE 
-                WHEN v.vMgr > 0 THEN 'Vacancy Available'
-                ELSE 'No Vacancy'
-            END AS vacancy_status
+            req_child.int_office_id AS preferred_office,
+            req_child.int_sl AS preference_order,
+            senior.wg AS priority_value
         FROM
             tbl_seniority_list_final senior
         JOIN
             tbl_trans_requests request ON senior.uid = request.vch_emp_code
         JOIN
+            tbl_trans_request_child req_child ON request.int_req_id = req_child.int_req_id
+        LEFT JOIN
+            tbl_allocations alloc ON senior.uid = alloc.vch_emp_code
+        LEFT JOIN
             tbl_trans_request_child child ON request.int_req_id = child.int_req_id
-        LEFT JOIN
-            tbl_allocations alloc ON senior.uid = alloc.vch_emp_code AND alloc.int_to_office = child.int_office_id
-        LEFT JOIN
-            tbl_vacancy v ON child.int_office_id = v.officeId
+                                            AND alloc.int_to_office = child.int_office_id
         WHERE
-            child.int_office_id = :officeId
-            AND alloc.id IS NULL -- Exclude employees already allocated to office 667
+            req_child.int_office_id = :officeId -- Office we are looking for
+            AND (
+                alloc.id IS NULL -- Employee not allocated to any office
+                OR (
+                    alloc.int_to_office != :officeId -- Employee not allocated to the office we are looking for
+                    AND req_child.int_sl < child.int_sl -- Check preference order
+                )
+            )
         ORDER BY
             senior.wg DESC, -- Sort by priority value (higher wg first)
-            child.int_sl ASC, -- Sort by preference order (1st option first)
+            req_child.int_sl ASC, -- Sort by preference order (1st option first)
             senior.uid ASC -- Sort by employee code (UID) in ascending order
         """, nativeQuery = true)
     List<Object[]> findQueueListByOfficeId(@Param("officeId") Integer officeId);
