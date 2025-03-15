@@ -1,7 +1,6 @@
 package com.techpool.ksfe.controller;
 
 import com.techpool.ksfe.dto.EmployeeQueueDTO;
-import com.techpool.ksfe.entity.TransRequestChild;
 import com.techpool.ksfe.service.TransferService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
